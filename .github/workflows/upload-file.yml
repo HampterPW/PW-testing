@@ -14,9 +14,10 @@ jobs:
 
       - name: Parse Issue Body
         id: parse
-        run: echo "::set-output name=file_name::$(echo '${{ github.event.issue.body }}' | grep -oP 'File Name\\*\\*: \\K.*')"
+        run: |
+          echo "file_name=$(echo '${{ github.event.issue.body }}' | grep -oP 'File Name\\*\\*: \\K.*')" >> $GITHUB_ENV
 
       - name: Add File to Repository
         run: |
-          echo "Adding file ${{ steps.parse.outputs.file_name }}"
+          echo "Adding file ${{ env.file_name }}"
           # Use a GitHub App or another secure way to upload the file if needed
